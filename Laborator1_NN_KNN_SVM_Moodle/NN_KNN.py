@@ -7,7 +7,7 @@ dict_classes = {0: "airplane", 1: "automobile", 2: "bird", 3: "cat", 4: "deer", 
 
 
 def most_frequent(list):
-    list = [x[0] for x in list]
+    list = [x for x in list]
     return [max(set(list), key = list.count)]
 
 # TODO - Application 1 - Step 3 - Compute the difference between the current image (img) taken from test dataset
@@ -23,11 +23,11 @@ def predictLabelNN(x_train_flatten, y_train, img):
 
         # TODO - Application 1 - Step 3b - compute the absolute difference between img and imgT
         difference = np.abs(img - imgT) #this will get how different the two images are, the smaller the difference the more similar they are
-        # distance = np.sqrt(np.square(img) + np.square(imgT))  #Euclidean distance formula
+        distance = np.sqrt(np.square(img) + np.square(imgT))  #Euclidean distance formula
 
         # TODO - Application 1 - Step 3c - add all pixels differences to a single number (score)
-        score = np.sum(difference) 
-        # score = np.sum(distance) # score for euclidean distance
+        #score = np.sum(difference) 
+        score = np.sum(distance) # score for euclidean distance
 
         # TODO - Application 1 - Step 3d - retain the label where the minimum score is obtained
         if score < scoreMin:
@@ -57,42 +57,45 @@ def predictLabelKNN(x_train_flatten, y_train, img):
     for idx, imgT in enumerate(x_train_flatten):
 
         # TODO - Application 2 - Step 1b - compute the absolute difference between img and imgT
-        #difference = ...
+        difference = np.abs(img - imgT)
 
 
 
         # TODO - Application 2 - Step 1c - add all pixels differences to a single number (score)
-        #score = ...
+        score = np.sum(difference)
 
 
 
         # TODO - Application 2 - Step 1d - store the score and the label associated to imgT into the predictions list
         #  as a pair (score, label)
+        predictions.append((score, y_train[idx][0])) # in each element of predictions we have a tuple (score, label) 
 
 
 
-        pass    #REMOVE THIS
+        #pass    #REMOVE THIS
 
 
 
     # TODO - Application 2 - Step 1e - Sort all elements in the predictions list in ascending order based on scores
-    #predictions = ...
+    predictions = sorted(predictions, key=lambda x: x[0])  # sorting based on the score which is the first element in the tuple 
 
 
 
     # TODO - Application 2 - Step 1f - retain only the top k predictions
+    k = 10 
+    top_predictions = predictions[0:k] #getting the first 10 elements from the sorted list
 
 
 
 
     # TODO - Application 2 - Step 1g - extract in a separate vector only the labels for the top k predictions
-    predLabels = []
+    predLabels = list(map(lambda x:x[1], top_predictions))
 
 
 
 
     # TODO - Application 2 - Step 1h - Determine the dominant class from the predicted labels
-    #predictedLabel = ...
+    predictedLabel = most_frequent(predLabels)
 
 
 
@@ -142,7 +145,8 @@ def main():
 
         # TODO - Application 1 - Step 3 - Call the predictLabelNN function
         predictedLabel = None  #Modify this
-        predictedLabel = predictLabelNN(x_train_flatten, y_train, img) #reshaped train set, labels of train set, current image from test set
+        #predictedLabel = predictLabelNN(x_train_flatten, y_train, img) #reshaped train set, labels of train set, current image from test set
+        predictedLabel = predictLabelKNN(x_train_flatten, y_train, img)
 
         # TODO - Application 1 - Step 4 - Compare the predicted label with the groundtruth (the label from y_test).
         #  If there is a match then increment the contor numberOfCorrectPredictedImages
