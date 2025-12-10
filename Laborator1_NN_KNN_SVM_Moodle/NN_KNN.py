@@ -58,11 +58,11 @@ def predictLabelKNN(x_train_flatten, y_train, img):
 
         # TODO - Application 2 - Step 1b - compute the absolute difference between img and imgT
         difference = np.abs(img - imgT)
-
+        distance = np.sqrt(np.square(img) + np.square(imgT))  #Euclidean distance formula
 
 
         # TODO - Application 2 - Step 1c - add all pixels differences to a single number (score)
-        score = np.sum(difference)
+        score = np.sum(distance)
 
 
 
@@ -82,7 +82,7 @@ def predictLabelKNN(x_train_flatten, y_train, img):
 
 
     # TODO - Application 2 - Step 1f - retain only the top k predictions
-    k = 10 
+    k = 50
     top_predictions = predictions[0:k] #getting the first 10 elements from the sorted list
 
 
@@ -144,7 +144,7 @@ def main():
 
 
         # TODO - Application 1 - Step 3 - Call the predictLabelNN function
-        predictedLabel = None  #Modify this
+        #predictedLabel = None  #Modify this
         #predictedLabel = predictLabelNN(x_train_flatten, y_train, img) #reshaped train set, labels of train set, current image from test set
         predictedLabel = predictLabelKNN(x_train_flatten, y_train, img)
 
@@ -157,7 +157,7 @@ def main():
 
 
     # TODO - Application 1 - Step 5 - Compute the accuracy
-    accuracy = numberOfCorrectPredictedImages / 200.0 # total number of images predicted
+    accuracy = (numberOfCorrectPredictedImages / 200.0) * 100 # total number of images predicted
     print("System accuracy = {}".format(accuracy))
 
 

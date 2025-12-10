@@ -1,0 +1,19 @@
+Question 4:
+k = 3 -> Accuracy = 35.5
+k = 5 -> Accuracy = 38.0
+k = 10 -> Accuracy = 39.0
+k = 20 -> Accuracy = 38.5
+k = 50 -> Accuracy = 35.0
+
+As the number of neighbors increases from 3 to 10, the system accuracy improves, reaching its maximum at k = 10 with 39.0%. When k increases further to 20 and 50, the accuracy decreases again. This shows the typical bias–variance tradeoff in k-NN that small k leads to unstable predictions, while large k leads to excessive smoothing.
+
+The prediction time increases with k, since more neighbors must be evaluated to make a decision.
+
+If k = 1, the algorithm becomes a standard Nearest Neighbor (NN) classifier, where each sample is classified only based on its closest neighbor. While this algorithm has very low bias, it has very high variance, making it extremely sensitive to noise and outliers. As a result, it often leads to overfitting and poor generalization on unseen data.
+
+Question 5:
+k = 3 -> Accuracy = 9.5
+k = 5 -> Accuracy = 14.00
+k = 10 -> Accuracy = 7.00
+k = 20 -> Accuracy = 7.00
+k = 50 -> Accuracy = 7.00

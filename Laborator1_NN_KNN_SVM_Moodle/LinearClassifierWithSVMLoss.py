@@ -1,44 +1,33 @@
 import numpy as np
-#####################################################################################################################
-#####################################################################################################################
 
 
-#####################################################################################################################
-#####################################################################################################################
 def predict(xsample, W):
 
     s = []
     # TODO - Application 3 - Step 2 - compute the vector with scores (s) as the product between W and xsample
-
-
-
+    s = np.matmul(W, xsample) # matrix multiplication between W and the current input data point
 
     return s
-#####################################################################################################################
-#####################################################################################################################
 
-
-#####################################################################################################################
-#####################################################################################################################
 # TODO - Application 3 - Step 3 - The function that compute the loss for a data point
 def computeLossForASample(s, labelForSample, delta):
 
     loss_i = 0
-    syi = s[labelForSample]  # the score for the correct class corresonding to the current input sample based on the label yi
+    syi = s[labelForSample]  # the score for the correct class corresponding to the current input sample based on the label yi
 
     # TODO - Application 3 - Step 3 - compute the loss_i
+    for j, sj in enumerate(s):
+        dist = sj - syi + delta
 
+        if j == labelForSample: # skip the true class
+            continue
 
-
-
+        if dist > 0: # only add to loss if the margin condition is violated, it came from the formula
+            loss_i += dist
+        
 
     return loss_i
-#####################################################################################################################
-#####################################################################################################################
 
-
-#####################################################################################################################
-#####################################################################################################################
 # TODO - Application 3 - Step 4 - The function that compute the gradient loss for a data point
 def computeLossGradientForASample(W, s, currentDataPoint, labelForSample, delta):
 
@@ -83,7 +72,7 @@ def main():
     # Labels associated with the testing points
     y_test = [0, 1, 2]
 
-    # The matrix of wights
+    # The matrix of weights
     W = np.array([[-1, 2,  1, 3],
                   [ 2, 0, -1, 4],
                   [ 1, 3,  2, 1]])
@@ -93,8 +82,8 @@ def main():
 
 
     loss_L = 0
-    dW = np.zeros(W.shape)
-    prev_loss = 100
+    dW = np.zeros(W.shape) # class with the same shape initialized with zeros
+    prev_loss = 100 # just a big number to compare with the first computed loss
 
 
     # TODO - Application 3 - Step 2 - For each input data...
