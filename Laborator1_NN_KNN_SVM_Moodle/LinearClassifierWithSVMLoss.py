@@ -78,43 +78,60 @@ def main():
     step_size = 0.01        # weights adjustment ratio
 
 
-    loss_L = 0
-    dW = np.zeros(W.shape) # class with the same shape initialized with zeros
-    prev_loss = 100 # just a big number to compare with the first computed loss
+    prev_loss = 1e9 
+    threshold =  0.001 # threshold for stopping the training
+    steps = 0
+    max_steps = 1000
 
+    while steps < max_steps:
+        loss_L = 0
+        dW = np.zeros(W.shape) # class with the same shape initialized with zeros
+    
+        # TODO - Application 3 - Step 2 - For each input data...
+        for idx, xsample in enumerate(x_train):
 
-    # TODO - Application 3 - Step 2 - For each input data...
-    for idx, xsample in enumerate(x_train):
-
-        # TODO - Application 3 - Step 2 - ...compute the scores s for all classes (call the method predict)
-        s = predict(xsample, W) # scores for all classes for the current input data point 
-
-
-
-        # TODO - Application 3 - Step 3 - Call the function (computeLossForASample) that
-        #  compute the loss for a data point (loss_i)
-        loss_i = computeLossForASample(s, y_train[idx], delta)
-
-
-
-        # Print the scores - Uncomment this
-        print("Scores for sample {} with label {} is: {} and loss is {}".format(idx, y_train[idx], s, loss_i))
+            # TODO - Application 3 - Step 2 - ...compute the scores s for all classes (call the method predict)
+            s = predict(xsample, W) # scores for all classes for the current input data point 
 
 
 
-        # TODO - Application 3 - Step 4 - Call the function (computeLossGradientForASample) that
-        #  compute the gradient loss for a data point (dW_i)
-        dW_i = computeLossGradientForASample(W, s, x_train[idx], y_train[idx], delta)
+            # TODO - Application 3 - Step 3 - Call the function (computeLossForASample) that
+            #  compute the loss for a data point (loss_i)
+            loss_i = computeLossForASample(s, y_train[idx], delta)
 
 
 
-        # TODO - Application 3 - Step 5 - Compute the global loss for all the samples (loss_L)
-        loss_L = loss_L + loss_i # accumulate the loss for all samples
+            # Print the scores - Uncomment this
+            print("Scores for sample {} with label {} is: {} and loss is {}".format(idx, y_train[idx], s, loss_i))
 
 
 
-        # TODO - Application 3 - Step 6 - Compute the global gradient loss matrix (dW)
-        dW = dW + dW_i # accumulate the gradient for all samples
+            # TODO - Application 3 - Step 4 - Call the function (computeLossGradientForASample) that
+            #  compute the gradient loss for a data point (dW_i)
+            dW_i = computeLossGradientForASample(W, s, x_train[idx], y_train[idx], delta)
+
+
+
+            # TODO - Application 3 - Step 5 - Compute the global loss for all the samples (loss_L)
+            loss_L += loss_i # accumulate the loss for all samples
+
+
+
+            # TODO - Application 3 - Step 6 - Compute the global gradient loss matrix (dW)
+            dW += dW_i # accumulate the gradient for all samples
+
+        loss_L = loss_L / len(x_train)  # normalize the loss by the number of training samples
+        dw = dW / len(x_train) # normalize the gradient by the number of training samples
+        loss_variation = abs(loss_L - prev_loss)
+
+        if loss_variation < threshold: # stopping condition based on loss variation
+            print("Training stopped after {} steps.".format(steps))
+            break
+
+        W = W - step_size * dW  # update the weights by moving in the direction of negative gradient
+        prev_loss = loss_L
+        steps += 1
+        print(f"Converged after {steps} steps with loss {loss_L}")
 
 
 
