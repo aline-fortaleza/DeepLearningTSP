@@ -120,37 +120,34 @@ def main():
             # TODO - Application 3 - Step 6 - Compute the global gradient loss matrix (dW)
             dW += dW_i # accumulate the gradient for all samples
 
+        # TODO - Application 3 - Step 7 - Compute the global normalized loss
         loss_L = loss_L / len(x_train)  # normalize the loss by the number of training samples
-        dw = dW / len(x_train) # normalize the gradient by the number of training samples
+        # TODO - Application 3 - Step 8 - Compute the global normalized gradient loss matrix
+        dW = dW / len(x_train) # normalize the gradient by the number of training samples
         loss_variation = abs(loss_L - prev_loss)
 
-        if loss_variation < threshold: # stopping condition based on loss variation
-            print("Training stopped after {} steps.".format(steps))
-            break
+        #print(f"[DEBUG] prev_loss={prev_loss}, loss_L={loss_L}, variation={loss_variation}")
 
+        if loss_variation < threshold:
+            print(f"Converged after {steps} steps. Final loss={loss_L}, variation={loss_variation}")
+            break
+    
+        # TODO - Application 3 - Step 9 - Adjust the weights matrix
         W = W - step_size * dW  # update the weights by moving in the direction of negative gradient
         prev_loss = loss_L
         steps += 1
-        print(f"Converged after {steps} steps with loss {loss_L}")
+        print(f"Step {steps}: loss={loss_L}, loss variation={loss_variation}")
 
 
 
 
 
 
-    # TODO - Application 3 - Step 7 - Compute the global normalized loss
-    loss_L = loss_L / len(x_train)  # normalize the loss by the number of training samples
+
     print("The global normalized loss = {}".format(loss_L))
 
 
 
-    # TODO - Application 3 - Step 8 - Compute the global normalized gradient loss matrix
-    dW = dW / len(x_train) # normalize the gradient by the number of training samples
-
-
-
-    # TODO - Application 3 - Step 9 - Adjust the weights matrix
-    W = W - step_size * dW  # update the weights by moving in the direction of negative gradient
 
 
 
@@ -159,12 +156,20 @@ def main():
     #  and compare them with the ground truth labels. What is the system accuracy?
     correctPredicted = 0
     for idx, xsample in enumerate(x_test):
+        s = predict(xsample, W)  # compute scores for all classes
+        y_pred = np.argmax(s)  # predicted label is the index of the class with the highest score
+
+        print(f"Test sample {idx}: scores={s}, predicted_label={y_pred}, true_label={y_test[idx]}")
+
+        if y_pred == y_test[idx]:
+            correctPredicted += 1
+
+        
 
 
+        
 
-        pass    # REMOVE THIS
-
-    accuracy = 0   # Modify this
+    accuracy = 100.0 * correctPredicted / len(x_test)
     print("Accuracy for test = {}%".format(accuracy))
 
     return
