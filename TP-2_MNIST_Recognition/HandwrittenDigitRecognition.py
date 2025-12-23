@@ -58,27 +58,39 @@ def CNN_model(input_shape, num_classes): # input shape is (28,28,1) and num_clas
     # TODO - Application 2 - Step 5a - Initialize the sequential model
     model = tf.keras.models.Sequential()
 
-    #TODO - Application 2 - Step 5b - Create the first hidden layer as a convolutional layer
-    model.add(layers.Conv2D(filters=8, kernel_size=(3, 3), activation='relu', input_shape=input_shape)) # 8 filters of size 3x3, relu activation function
+    # #TODO - Application 2 - Step 5b - Create the first hidden layer as a convolutional layer
+    # model.add(layers.Conv2D(filters=8, kernel_size=(3, 3), activation='relu', input_shape=input_shape)) # 8 filters of size 3x3, relu activation function
 
-    #TODO - Application 2 - Step 5c - Define the pooling layer
-    model.add(layers.MaxPooling2D(pool_size=(2, 2))) # max pooling with pool size of 2x2
+    # #TODO - Application 2 - Step 5c - Define the pooling layer
+    # model.add(layers.MaxPooling2D(pool_size=(2, 2))) # max pooling with pool size of 2x2
 
-    #TODO - Application 2 - Step 5d - Define the Dropout layer
-    model.add(layers.Dropout(0.2)) # dropout layer with dropout rate of 0.2 to prevent overfitting 
+    # #TODO - Application 2 - Step 5d - Define the Dropout layer
+    # model.add(layers.Dropout(0.2)) # dropout layer with dropout rate of 0.2 to prevent overfitting 
 
-    #TODO - Application 2 - Step 5e - Define the flatten layer
-    model.add(layers.Flatten()) # flatten the 2D feature maps to 1D feature vectors
+    # #TODO - Application 2 - Step 5e - Define the flatten layer
+    # model.add(layers.Flatten()) # flatten the 2D feature maps to 1D feature vectors
 
-    #TODO - Application 2 - Step 5f - Define a dense layer of size 128
-    model.add(layers.Dense(128, activation='relu')) # dense layer with 128 neurons and relu activation function
+    # #TODO - Application 2 - Step 5f - Define a dense layer of size 128
+    # model.add(layers.Dense(128, activation='relu')) # dense layer with 128 neurons and relu activation function
 
-    #TODO - Application 2 - Step 5g - Define the output layer
-    model.add(layers.Dense(num_classes, activation='softmax')) # output layer with softmax activation for multi-class classification
+    # #TODO - Application 2 - Step 5g - Define the output layer
+    # model.add(layers.Dense(num_classes, activation='softmax')) # output layer with softmax activation for multi-class classification
 
-    #TODO - Application 2 - Step 5h - Compile the model
-    model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy']) # using categorical crossentropy loss for multi-class classification
+    # #TODO - Application 2 - Step 5h - Compile the model
+    # model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy']) # using categorical crossentropy loss for multi-class classification
 
+    # Question 9
+    model.add(layers.Conv2D(30, (5, 5), activation='relu', input_shape=input_shape))
+    model.add(layers.MaxPooling2D(pool_size=(2, 2)))
+    model.add(layers.Conv2D(15, (3, 3), activation='relu'))
+    model.add(layers.MaxPooling2D(pool_size=(2, 2)))
+    model.add(layers.Dropout(0.2))
+    model.add(layers.Flatten())
+    model.add(layers.Dense(128, activation='relu'))
+    model.add(layers.Dense(50, activation='relu'))
+    model.add(layers.Dense(num_classes, activation='softmax'))
+
+    model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
     return model
 
 
